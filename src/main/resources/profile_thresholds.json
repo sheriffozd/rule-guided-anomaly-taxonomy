@@ -1,0 +1,63 @@
+{
+  "rule_version": "behavior_profiles_v1",
+  "train_end_exclusive": "2021-05-17",
+  "train_rows": 13072118,
+  "train_windows": 1536,
+  "transaction_sample_rows": 200000,
+  "random_state": 42,
+  "baseline_quantile": 0.95,
+  "window_weighting": "one observation per occupied 15-minute TRAIN window",
+  "value_weighting": "uniform TRAIN transaction sample",
+  "centrality_weighting": "sender and receiver endpoints from a uniform TRAIN transaction sample",
+  "value_scale": "stored value column (log1p DOGE in this pipeline)",
+  "scenarios": {
+    "stress_lenient": {
+      "density": -0.025173268280923367,
+      "senders": 7.336611032485962,
+      "value": 9.752993392944337,
+      "degree": 15.632579803466797,
+      "pageRank": 1.7888548374176025,
+      "eigenvector": 2.101123997011456e-10
+    },
+    "local_lenient": {
+      "density": 0.008738431730307956,
+      "senders": 7.4361449718475345,
+      "value": 10.723118295669558,
+      "degree": 15.632579803466797,
+      "pageRank": 3.803138017654419,
+      "eigenvector": 5.233363964407545e-09
+    },
+    "baseline": {
+      "density": 0.06377441994845867,
+      "senders": 7.550792574882507,
+      "value": 11.512935638427734,
+      "degree": 15.632579803466797,
+      "pageRank": 5.871922492980957,
+      "eigenvector": 4.806465270235094e-08
+    },
+    "local_strict": {
+      "density": 0.18005296662449838,
+      "senders": 7.80049090385437,
+      "value": 12.611540794372559,
+      "degree": 15.632579803466797,
+      "pageRank": 8.69189167022705,
+      "eigenvector": 1.583081541411957e-07
+    },
+    "stress_strict": {
+      "density": 9.878884458541876,
+      "senders": 8.866923809051515,
+      "value": 15.238469319343572,
+      "degree": 15.632579803466797,
+      "pageRank": 9.788104057312012,
+      "eigenvector": 0.005699862260371447
+    }
+  },
+  "thresholds": {
+    "density": 0.06377441994845867,
+    "senders": 7.550792574882507,
+    "value": 11.512935638427734,
+    "degree": 15.632579803466797,
+    "pageRank": 5.871922492980957,
+    "eigenvector": 4.806465270235094e-08
+  }
+}

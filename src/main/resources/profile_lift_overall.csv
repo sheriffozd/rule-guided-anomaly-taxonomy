@@ -1,0 +1,5 @@
+scope,profile,profile_name,anomaly_total,normal_total,anomaly_profile_count,normal_profile_count,anomaly_profile_rate_percent,normal_profile_rate_percent,difference_percentage_points,lift,lift_status
+ALL,T1,High Transaction Density,238824,16666970,67046,10087033,28.07339296,60.52109652,-32.44770356,0.46386127,finite
+ALL,T2,High-Value Transfer,238824,16666970,41882,752252,17.53676347,4.51342986,13.02333362,3.88546273,finite
+ALL,T3,High Sender Participation,238824,16666970,55448,1050789,23.21709711,6.30461926,16.91247785,3.68255341,finite
+ALL,T4,High-Centrality Address Involvement,238824,16666970,212276,598859,88.88386427,3.59308861,85.29077566,24.73745405,finite

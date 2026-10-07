@@ -1,0 +1,5 @@
+period,t4_anomaly_records,qualified_unique_addresses,top_1_actual_addresses,top_1_covered_records,top_1_coverage_percent,top_10_actual_addresses,top_10_covered_records,top_10_coverage_percent,top_100_actual_addresses,top_100_covered_records,top_100_coverage_percent
+ALL,212276,20,1,99969,47.09387778,10,211268,99.52514651,20,212276,100.00000000
+TRAIN,180313,20,1,89135,49.43348511,10,179614,99.61234076,20,180313,100.00000000
+VALID,5557,18,1,2102,37.82616520,10,5526,99.44214504,18,5557,100.00000000
+TEST,26406,20,1,8849,33.51132318,10,26146,99.01537529,20,26406,100.00000000

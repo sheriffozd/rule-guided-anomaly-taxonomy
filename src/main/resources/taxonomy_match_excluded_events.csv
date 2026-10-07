@@ -1,0 +1,2 @@
+event_id,event_date,event_time,event_name,event_type,expected_taxonomy,reason,window_hours,_event_datetime,_window_hours,_expected_set,_window_start,_window_end,_exclusion_reason
+E1,28.04.2021,06:20,The Dogefather SNL May 8,Tweet,T1 & T4,Intensity/influence-driven,24,2021-04-28 06:20:00,24,"('T1', 'T4')",2021-04-27 06:20:00,2021-04-29 06:20:00,complete event window falls outside the observed transaction period

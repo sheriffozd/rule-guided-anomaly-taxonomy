@@ -1,0 +1,15 @@
+event_id,event_date,event_time,time_precision,event_name,event_type,expected_taxonomy,reason,window_hours
+E1,28.04.2021,06:20,time,The Dogefather SNL May 8,Tweet,T1 & T4,transaction-density and central-address involvement hypothesis,24
+E2,06.05.2021,00:16,time,SNL share Elon Musk for Saturday Night,Tweet,T4,central-address involvement hypothesis,12
+E3,07.05.2021,06:14,time,I’m looking for a shiba pup!,Tweet,T4,community-influence and central-address hypothesis,6
+E4,07.05.2021,21:05,time,Elon Musk Guest Starring Tweet,Tweet,T4,central-address involvement hypothesis,6
+E5,09.05.2021,03:30,time,SNL Elon Musk,Media,T1 & T3,transaction-density and sender-participation hypothesis,8
+E6,09.05.2021,04:00,time,Elon Says Dogecoin is hustle,Media,T1 & T3,transaction-density and sender-participation hypothesis; approximate UTC time within SNL broadcast,6
+E7,09.05.2021,22:41,time,SpaceX launching satellite Doge-1 to the moon next year,Tweet,T1 & T4,transaction-density and central-address involvement hypothesis,12
+E8,11.05.2021,08:13,time,The survey by Elon Musk: Do you want Tesla to accept Doge?,Tweet,T2 & T4,high-value-transfer and central-address involvement hypothesis,6
+E9,12.05.2021,22:06,time,Elon Musk shares suspension of Tesla purchases using Bitcoin,Tweet,T1 & T3,transaction-density and sender-participation hypothesis,6
+E10,20.05.2021,17:56,time,"Yeah, I haven’t & won’t sell any Doge",Tweet,T4,central-address involvement hypothesis,6
+E11,17.05.2021,05:56,time,Elon Musk clarified that Tesla had not sold any Bitcoin,Crypto-market / Tweet,T1 & T3,transaction-density and sender-participation hypothesis following a broader crypto-market clarification,6
+E12,18.05.2021,,day,Chinese financial-industry associations reiterated restrictions on cryptocurrency-related services,Regulatory,T1 & T3,day-level regulatory event; exact announcement time not treated as verified,12
+E13,19.05.2021,12:30,time,Broad cryptocurrency market sell-off,Market shock,T1 & T3,market-state event; representative crash-onset time in UTC,12
+E14,21.05.2021,,day,China’s Financial Stability and Development Committee announced a crackdown on Bitcoin mining and trading,Regulatory,T1 & T3,day-level regulatory event; exact announcement time not treated as verified,12

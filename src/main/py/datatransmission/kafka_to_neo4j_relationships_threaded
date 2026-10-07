@@ -1,0 +1,120 @@
+import queue
+import threading
+import datetime
+from concurrent.futures import ThreadPoolExecutor
+from kafka import KafkaConsumer
+from neo4j import GraphDatabase
+import json
+
+neo4j_uri = "bolt://localhost:7689"
+neo4j_user = "username"
+neo4j_password = "password"
+kafka_bootstrap_servers = ['172.17.0.1:9092', '172.17.0.1:9093', '172.17.0.1:9094']
+kafka_topic = 'dogecoin-transactions'
+
+driver = GraphDatabase.driver(neo4j_uri, auth=(neo4j_user, neo4j_password), max_connection_pool_size=50)
+
+consumer = KafkaConsumer(
+    kafka_topic,
+    bootstrap_servers=kafka_bootstrap_servers,
+    value_deserializer=lambda m: json.loads(m.decode('utf-8')),
+    auto_offset_reset='earliest',
+    enable_auto_commit=True,
+    group_id='dogecoin-group-only-raw-transaction'
+)
+
+batch_queue = queue.Queue(maxsize=20)  # Kuyruk büyüklüğünü artırdık
+
+
+def write_transactions_only_apoc(batch):
+    query = """
+    CALL apoc.periodic.iterate(
+      '
+        UNWIND $batch AS tx_batch
+        RETURN tx_batch
+      ',
+      '  
+        MERGE (sender:Address {address: tx_batch.from})
+        MERGE (receiver:Address {address: tx_batch.to})
+        MERGE (tx:Transaction {id: tx_batch.id})
+        SET tx.txid = tx_batch.txid, tx.date = tx_batch.date, tx.block = tx_batch.block, tx.value = tx_batch.value
+        MERGE (rtx:RawTransaction {id: tx_batch.id})
+        SET rtx.txid = tx_batch.txid, rtx.date = tx_batch.date, rtx.block = tx_batch.block, rtx.value = tx_batch.value, rtx.from = tx_batch.from, rtx.to = tx_batch.to
+        MERGE (block:Block {block: tx_batch.block})
+        MERGE (date:Date {date: tx_batch.date})
+        MERGE (idNode:TxID {id: tx_batch.id})     
+      ',
+      {
+        batchSize: 500,
+        parallel: true,
+        params: {batch: $batch}
+      }
+    )
+    YIELD batches, total
+    RETURN batches, total
+    """
+    with driver.session() as session:
+        session.run(query, batch=batch)
+
+
+
+def consumer_thread(batch_size=1000, max_messages=2000):
+    batch = []
+    count = 0
+    for message in consumer:
+        data = message.value
+
+        batch.append(data)
+        count += 1
+
+        if len(batch) >= batch_size:
+            batch_queue.put(batch)
+            batch = []
+
+        if count >= max_messages:
+            break
+
+    if batch:
+        batch_queue.put(batch)
+
+def writer_worker():
+    while True:
+        batch = batch_queue.get()
+        if batch is None:
+            break
+        start_time = datetime.datetime.now()
+
+        print(f"Batch yazma baslagic: {len(batch)} işlem yazılıyor.")
+        write_transactions_only_apoc(batch)
+
+        end_time = datetime.datetime.now()
+        print(f"Batch yazma süresi: {end_time - start_time} | {len(batch)} işlem yazıldı.")
+        batch_queue.task_done()
+
+
+if __name__ == "__main__":
+    start_time = datetime.datetime.now()
+    print(f"Başlangıç zamanı: {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+
+    # start_block = get_last_block() - 1
+    # print(f"En son işlenen blok: {get_last_block()}")
+    # print(f"Kafka tüketimi {start_block} bloğundan başlayacak.")
+
+    t1 = threading.Thread(target=consumer_thread, kwargs={"batch_size": 1000, "max_messages": 2000})
+    t1.start()
+
+    # ThreadPoolExecutor ile 5 paralel yazıcı thread çalıştır
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        for _ in range(5):
+            executor.submit(writer_worker)
+
+        t1.join()
+        for _ in range(5):
+            batch_queue.put(None)  # Her worker için sonlandırma sinyali
+
+        consumer.close()
+
+    end_time = datetime.datetime.now()
+    print(f"Bitiş zamanı: {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Toplam süre: {end_time - start_time}")
+
